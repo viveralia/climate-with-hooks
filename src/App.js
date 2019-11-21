@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import Header from "./components/Header";
+import Form from "./components/Form";
+import Error from "./components/Error";
 
-function App() {
+const App = () => {
+  // Initial States
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
+  const [error, setError] = useState(false);
+
+  const handleState = async query => {
+    if (!query.city || !query.country) {
+      setError(true);
+    } else {
+      setCountry(query.country);
+      setCity(query.city);
+    }
+  };
+
+  const fetchData = async () => {
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${process.env.REACT_APP_KEY}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log(data);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="container">
+        <div className="row">
+          <div className="col-12 col-md-6 mx-auto">
+            <Header title="React Climate App" />
+            <Form handleState={handleState} />
+            {error && <Error />}
+          </div>
+        </div>
+      </div>
+    </>
   );
-}
+};
 
 export default App;
