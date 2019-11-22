@@ -41,7 +41,7 @@ const Form = ({ handleState }) => {
               className="form-control"
               onChange={handleChange}
             >
-              <option value="" defaultValue disabled>
+              <option value="" defaultValue>
                 Select a country
               </option>
               <option value="AR">Argentina</option>
